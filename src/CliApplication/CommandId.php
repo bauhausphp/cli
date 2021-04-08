@@ -7,6 +7,7 @@ use Attribute;
 /**
  * @internal
  */
+
 #[Attribute]
 final class CommandId
 {
