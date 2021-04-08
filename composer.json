@@ -1,5 +1,7 @@
 {
     "name": "bauhaus/cli-kit",
+    "description": "Framework for creating cli application",
+
     "type": "library",
     "license": "MIT",
 
