@@ -3,6 +3,8 @@
 namespace Bauhaus\CliApplication;
 
 use ArrayIterator;
+use Bauhaus\CliEntrypoint;
+use Bauhaus\CliInput;
 use IteratorAggregate;
 
 /**
@@ -19,10 +21,10 @@ final class CommandCollection implements IteratorAggregate
         $this->sort();
     }
 
-    public static function fromEntrypoints(string ...$entrypoints): self
+    public static function fromEntrypoints(CliEntrypoint ...$entrypoints): self
     {
         $commands = array_map(
-            fn (string $e) => Command::fromEntrypoint($e),
+            fn (CliEntrypoint $e) => Command::fromEntrypoint($e),
             $entrypoints,
         );
 
@@ -34,7 +36,7 @@ final class CommandCollection implements IteratorAggregate
         return new ArrayIterator($this->commands);
     }
 
-    public function findMatchingCommand(Input $input): ?Command
+    public function findMatch(CliInput $input): ?Command
     {
         foreach ($this->commands as $command) {
             if ($command->match($input)) {

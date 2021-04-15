@@ -2,25 +2,27 @@
 
 namespace Bauhaus\CliApplication;
 
-use Bauhaus\Doubles\AnotherSampleCommand;
-use Bauhaus\Doubles\SampleCommand;
+use Bauhaus\CliEntrypoint;
+use Bauhaus\CliInput;
+use Bauhaus\Doubles\Entrypoints\AnotherSampleCliEntrypoint;
+use Bauhaus\Doubles\Entrypoints\SampleCliEntrypoint;
 use PHPUnit\Framework\TestCase;
 
 class CommandTest extends TestCase
 {
-    public function entrypointClassesWithExpectedCommandId(): array
+    public function entrypointWithExpectedCommandId(): array
     {
         return [
-            [SampleCommand::class, new CommandId('sample-id')],
-            [AnotherSampleCommand::class, new CommandId('another-sample-id')],
+            [new SampleCliEntrypoint(), new CommandId('sample-id')],
+            [new AnotherSampleCliEntrypoint(), new CommandId('another-sample-id')],
         ];
     }
 
     /**
      * @test
-     * @dataProvider entrypointClassesWithExpectedCommandId
+     * @dataProvider entrypointWithExpectedCommandId
      */
-    public function defineIdFromEntrypointAttribute(string $entrypoint, CommandId $expected): void
+    public function extractIdFromEntrypoint(CliEntrypoint $entrypoint, CommandId $expected): void
     {
         $command = Command::fromEntrypoint($entrypoint);
 
@@ -34,8 +36,8 @@ class CommandTest extends TestCase
      */
     public function matchIfInputCommandIdIsEqual(): void
     {
-        $input = Input::fromString('./bin sample-id');
-        $command = Command::fromEntrypoint(SampleCommand::class);
+        $input = CliInput::fromString('./bin sample-id');
+        $command = Command::fromEntrypoint(new SampleCliEntrypoint());
 
         $result = $command->match($input);
 
@@ -47,8 +49,8 @@ class CommandTest extends TestCase
      */
     public function doNotMatchIfInputCommandIdIsNotEqual(): void
     {
-        $input = Input::fromString('./bin another-sample-id');
-        $command = Command::fromEntrypoint(SampleCommand::class);
+        $input = CliInput::fromString('./bin another-sample-id');
+        $command = Command::fromEntrypoint(new SampleCliEntrypoint());
 
         $result = $command->match($input);
 

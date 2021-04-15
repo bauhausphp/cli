@@ -2,6 +2,7 @@
 
 namespace Bauhaus\CliApplication;
 
+use Bauhaus\CliEntrypoint;
 use ReflectionClass;
 
 /**
@@ -11,9 +12,9 @@ final class CommandAttributeExtractor
 {
     private ReflectionClass $reflection;
 
-    public function __construct(string $entrypointClass)
+    public function __construct(CliEntrypoint $entrypoint)
     {
-        $this->reflection = new ReflectionClass($entrypointClass);
+        $this->reflection = new ReflectionClass($entrypoint);
     }
 
     public function id(): CommandId

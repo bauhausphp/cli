@@ -1,11 +1,11 @@
 <?php
 
-namespace Bauhaus\CliApplication;
+namespace Bauhaus;
 
 use Bauhaus\CliApplication\Output\CannotWrite;
 use PHPUnit\Framework\TestCase;
 
-class OutputTest extends TestCase
+class CliOutputTest extends TestCase
 {
     private const OUTPUT = '/var/tmp/output_test.txt';
 
@@ -26,7 +26,7 @@ class OutputTest extends TestCase
         $this->expectException(CannotWrite::class);
         $this->expectExceptionMessage("Provided output is a directory: $dir");
 
-        Output::to($dir);
+        CliOutput::to($dir);
     }
 
     /**
@@ -34,7 +34,7 @@ class OutputTest extends TestCase
      */
     public function writeByAppendingStringToOutput(): void
     {
-        $output = Output::to(self::OUTPUT);
+        $output = CliOutput::to(self::OUTPUT);
 
         $output->write('foo');
         $output->write('bar');

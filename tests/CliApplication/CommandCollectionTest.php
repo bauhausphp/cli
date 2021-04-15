@@ -3,8 +3,9 @@
 namespace Bauhaus\CliApplication;
 
 use ArrayIterator;
-use Bauhaus\Doubles\AnotherSampleCommand;
-use Bauhaus\Doubles\SampleCommand;
+use Bauhaus\CliInput;
+use Bauhaus\Doubles\Entrypoints\AnotherSampleCliEntrypoint;
+use Bauhaus\Doubles\Entrypoints\SampleCliEntrypoint;
 use PHPUnit\Framework\TestCase;
 
 class CommandCollectionTest extends TestCase
@@ -14,8 +15,8 @@ class CommandCollectionTest extends TestCase
     protected function setUp(): void
     {
         $this->collection = CommandCollection::fromEntrypoints(
-            SampleCommand::class,
-            AnotherSampleCommand::class,
+            new SampleCliEntrypoint(),
+            new AnotherSampleCliEntrypoint(),
         );
     }
 
@@ -24,9 +25,9 @@ class CommandCollectionTest extends TestCase
      */
     public function returnNullIfNoCommandMatchesInput(): void
     {
-        $input = Input::fromString('./bin not-matching');
+        $input = CliInput::fromString('./bin not-matching');
 
-        $null = $this->collection->findMatchingCommand($input);
+        $null = $this->collection->findMatch($input);
 
         $this->assertNull($null);
     }
@@ -34,8 +35,8 @@ class CommandCollectionTest extends TestCase
     public function inputsWithExpectedMatchingCommand(): array
     {
         return [
-            ['./bin sample-id', Command::fromEntrypoint(SampleCommand::class)],
-            ['./bin another-sample-id', Command::fromEntrypoint(AnotherSampleCommand::class)],
+            ['./bin sample-id', Command::fromEntrypoint(new SampleCliEntrypoint())],
+            ['./bin another-sample-id', Command::fromEntrypoint(new AnotherSampleCliEntrypoint())],
         ];
     }
 
@@ -45,9 +46,9 @@ class CommandCollectionTest extends TestCase
      */
     public function returnCommandMatchingInput(string $rawInput, Command $expected): void
     {
-        $input = Input::fromString($rawInput);
+        $input = CliInput::fromString($rawInput);
 
-        $command = $this->collection->findMatchingCommand($input);
+        $command = $this->collection->findMatch($input);
 
         $this->assertEquals($expected, $command);
     }
@@ -58,8 +59,8 @@ class CommandCollectionTest extends TestCase
     public function isIterableHavingCommandsOrderedByTheirId(): void
     {
         $expected = new ArrayIterator([
-            Command::fromEntrypoint(AnotherSampleCommand::class),
-            Command::fromEntrypoint(SampleCommand::class),
+            Command::fromEntrypoint(new AnotherSampleCliEntrypoint()),
+            Command::fromEntrypoint(new SampleCliEntrypoint()),
         ]);
 
         $iterator = $this->collection->getIterator();

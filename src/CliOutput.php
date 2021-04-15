@@ -1,10 +1,10 @@
 <?php
 
-namespace Bauhaus\CliApplication;
+namespace Bauhaus;
 
 use Bauhaus\CliApplication\Output\CannotWrite;
 
-final class Output
+final class CliOutput
 {
     /** @var resource */
     private $resource;

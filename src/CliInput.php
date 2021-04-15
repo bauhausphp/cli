@@ -1,8 +1,10 @@
 <?php
 
-namespace Bauhaus\CliApplication;
+namespace Bauhaus;
 
-final class Input
+use Bauhaus\CliApplication\CommandId;
+
+final class CliInput
 {
     private array $rawInput;
     private CommandId $commandId;
@@ -14,9 +16,9 @@ final class Input
         $this->parseInput();
     }
 
-    public static function fromGlobal(): self
+    public static function fromArgv(string ...$argv): self
     {
-        return new self(...$_SERVER['argv']);
+        return new self(...$argv);
     }
 
     public static function fromString(string $rawInput): self
