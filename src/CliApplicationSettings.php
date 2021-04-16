@@ -2,8 +2,6 @@
 
 namespace Bauhaus;
 
-use Bauhaus\CliMiddleware;
-
 final class CliApplicationSettings
 {
     private const DEFAULT_OUTPUT = 'php://stdout';

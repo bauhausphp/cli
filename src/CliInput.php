@@ -6,13 +6,12 @@ use Bauhaus\CliApplication\CommandId;
 
 final class CliInput
 {
-    private array $rawInput;
+    private array $argv;
     private CommandId $commandId;
 
-    private function __construct(
-        string ...$rawInput,
-    ) {
-        $this->rawInput = $rawInput;
+    private function __construct(string ...$rawInput)
+    {
+        $this->argv = $rawInput;
         $this->parseInput();
     }
 
@@ -21,9 +20,9 @@ final class CliInput
         return new self(...$argv);
     }
 
-    public static function fromString(string $rawInput): self
+    public static function fromString(string $string): self
     {
-        return new self(...explode(' ', $rawInput));
+        return new self(...explode(' ', $string));
     }
 
     public function commandId(): CommandId
@@ -33,6 +32,6 @@ final class CliInput
 
     private function parseInput(): void
     {
-        $this->commandId = new CommandId($this->rawInput[1]);
+        $this->commandId = new CommandId($this->argv[1]);
     }
 }

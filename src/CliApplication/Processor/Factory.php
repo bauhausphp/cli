@@ -4,13 +4,11 @@ namespace Bauhaus\CliApplication\Processor;
 
 use Bauhaus\CliApplication\Processor;
 use Bauhaus\CliApplicationSettings;
-use Bauhaus\CliInput;
-use Bauhaus\CliOutput;
 
 /**
  * @internal
  */
-class ProcessorChainFactory
+class Factory
 {
     private function __construct(
         private CliApplicationSettings $settings,

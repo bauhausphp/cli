@@ -16,8 +16,6 @@ final class Command
     private function __construct(
         private CliEntrypoint $entrypoint,
     ) {
-        // TODO check if it is CommandEntrypoint class
-
         $this->extractEntrypointAttributes();
     }
 

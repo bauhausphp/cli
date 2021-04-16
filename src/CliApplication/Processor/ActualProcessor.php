@@ -19,7 +19,7 @@ class ActualProcessor implements Processor
 
     public static function build(CliApplicationSettings $settings): ActualProcessor
     {
-        return new self(ProcessorChainFactory::build($settings));
+        return new self(Factory::build($settings));
     }
 
     public function execute(CliInput $input, CliOutput $output): void
