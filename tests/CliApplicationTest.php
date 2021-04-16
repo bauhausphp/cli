@@ -4,6 +4,7 @@ namespace Bauhaus;
 
 use Bauhaus\Doubles\Entrypoints\AnotherSampleCliEntrypoint;
 use Bauhaus\Doubles\Entrypoints\SampleCliEntrypoint;
+use Bauhaus\Doubles\Middlewares\CliMiddlewareThatWritesInOutput;
 use PHPUnit\Framework\TestCase;
 
 class CliApplicationTest extends TestCase
@@ -19,6 +20,10 @@ class CliApplicationTest extends TestCase
             ->withEntrypoints(
                 new SampleCliEntrypoint(),
                 new AnotherSampleCliEntrypoint(),
+            )
+            ->withMiddlewares(
+                new CliMiddlewareThatWritesInOutput('! '),
+                new CliMiddlewareThatWritesInOutput('# '),
             );
 
         $this->cliApplication = CliApplication::bootstrap($settings);
@@ -34,8 +39,8 @@ class CliApplicationTest extends TestCase
     public function commandIdWithExpectedOutput(): array
     {
         return [
-            ['sample-id', 'sample entrypoint'],
-            ['another-sample-id', 'another sample entrypoint'],
+            ['sample-id', '! # sample entrypoint'],
+            ['another-sample-id', '! # another sample entrypoint'],
         ];
     }
 

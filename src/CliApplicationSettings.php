@@ -2,11 +2,14 @@
 
 namespace Bauhaus;
 
+use Bauhaus\CliMiddleware;
+
 final class CliApplicationSettings
 {
     private const DEFAULT_OUTPUT = 'php://stdout';
 
     private array $entrypoints = [];
+    private array $middlewares = [];
 
     private function __construct(
         private string $output,
@@ -33,6 +36,14 @@ final class CliApplicationSettings
         return $this->entrypoints;
     }
 
+    /**
+     * @return CliMiddleware[]
+     */
+    public function middlewares(): array
+    {
+        return $this->middlewares;
+    }
+
     public function withOutput(string $output): self
     {
         $new = $this->clone();
@@ -45,6 +56,14 @@ final class CliApplicationSettings
     {
         $new = $this->clone();
         $new->entrypoints = $entrypoints;
+
+        return $new;
+    }
+
+    public function withMiddlewares(CliMiddleware ...$middlewares): self
+    {
+        $new = $this->clone();
+        $new->middlewares = $middlewares;
 
         return $new;
     }

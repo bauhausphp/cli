@@ -3,6 +3,7 @@
 namespace Bauhaus;
 
 use Bauhaus\Doubles\Entrypoints\SampleCliEntrypoint;
+use Bauhaus\Doubles\Middlewares\CliMiddlewareThatWritesInOutput;
 use PHPUnit\Framework\TestCase;
 
 class CliApplicationSettingsTest extends TestCase
@@ -45,5 +46,19 @@ class CliApplicationSettingsTest extends TestCase
         $this->assertNotSame($originalSettings, $newSettings);
         $this->assertEquals([], $originalSettings->entrypoints());
         $this->assertEquals([new SampleCliEntrypoint()], $newSettings->entrypoints());
+    }
+
+    /**
+     * @test
+     */
+    public function setMiddlewaresByNewInstance(): void
+    {
+        $originalSettings = CliApplicationSettings::default();
+
+        $newSettings = $originalSettings->withMiddlewares(new CliMiddlewareThatWritesInOutput('#'));
+
+        $this->assertNotSame($originalSettings, $newSettings);
+        $this->assertEquals([], $originalSettings->entrypoints());
+        $this->assertEquals([new CliMiddlewareThatWritesInOutput('#')], $newSettings->middlewares());
     }
 }
