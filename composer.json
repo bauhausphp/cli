@@ -18,8 +18,7 @@
     },
 
     "require": {
-        "php": "^8.0",
-        "bauhaus/service-resolver": "dev-review-code"
+        "php": "^8.0"
     },
 
     "require-dev": {
