@@ -2,7 +2,6 @@
 
 namespace Bauhaus\Cli\Processor;
 
-use Bauhaus\Cli\Processor;
 use Bauhaus\CliInput;
 use Bauhaus\CliMiddleware;
 use Bauhaus\CliOutput;
@@ -10,11 +9,11 @@ use Bauhaus\CliOutput;
 /**
  * @internal
  */
-class MiddlewareDelegator implements Processor
+class MiddlewareDelegator implements Handler
 {
     public function __construct(
         private CliMiddleware $middleware,
-        private Processor $next,
+        private Handler $next,
     ) {
     }
 

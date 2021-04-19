@@ -2,20 +2,19 @@
 
 namespace Bauhaus\Cli\Processor;
 
-use Bauhaus\Cli\Processor;
 use Bauhaus\CliApplicationSettings;
 
 /**
  * @internal
  */
-class Factory
+class HandlerFactory
 {
     private function __construct(
         private CliApplicationSettings $settings,
     ) {
     }
 
-    public static function build(CliApplicationSettings $settings): Processor
+    public static function build(CliApplicationSettings $settings): Handler
     {
         $factory = new self($settings);
         $entrypointExecutor = $factory->buildEntrypointExecutor();
@@ -28,7 +27,7 @@ class Factory
         return new EntrypointExecutor(...$this->settings->entrypoints());
     }
 
-    private function buildMiddlewareChain(Processor $next): Processor
+    private function buildMiddlewareChain(Handler $next): Handler
     {
         $middlewares = array_reverse($this->settings->middlewares());
 

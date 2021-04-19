@@ -3,7 +3,6 @@
 namespace Bauhaus;
 
 use Bauhaus\Cli\Processor;
-use Bauhaus\Cli\Processor\ActualProcessor;
 
 final class CliApplication
 {
@@ -17,7 +16,7 @@ final class CliApplication
     {
         return new self(
             CliOutput::to($settings->output()),
-            ActualProcessor::build($settings),
+            Processor::build($settings),
         );
     }
 

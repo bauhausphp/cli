@@ -3,7 +3,6 @@
 namespace Bauhaus\Cli\Processor;
 
 use Bauhaus\Cli\CommandCollection;
-use Bauhaus\Cli\Processor;
 use Bauhaus\CliEntrypoint;
 use Bauhaus\CliInput;
 use Bauhaus\CliOutput;
@@ -11,7 +10,7 @@ use Bauhaus\CliOutput;
 /**
  * @internal
  */
-class EntrypointExecutor implements Processor
+class EntrypointExecutor implements Handler
 {
     private CommandCollection $commands;
 
