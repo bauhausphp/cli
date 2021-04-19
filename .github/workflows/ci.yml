@@ -14,14 +14,14 @@ jobs:
     - name: Setup
       run: |
         BRANCH=$(echo ${GITHUB_REF} | cut -d '/' -f 3-)
-        make setup package=cli-kit branch=${BRANCH}
+        make setup package=cli branch=${BRANCH}
 
     - name: Tests
-      run: make tests package=cli-kit
+      run: make tests package=cli
 
     - name: Coverage
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
       run: |
         printenv | grep COVERALLS_REPO_TOKEN >> .docker-run.env
-        make coverage package=cli-kit
+        make coverage package=cli
