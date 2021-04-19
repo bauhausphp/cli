@@ -2,7 +2,7 @@
 
 namespace Bauhaus;
 
-use Bauhaus\CliApplication\CommandId;
+use Bauhaus\Cli\CommandId;
 
 final class CliInput
 {

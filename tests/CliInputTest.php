@@ -2,7 +2,7 @@
 
 namespace Bauhaus;
 
-use Bauhaus\CliApplication\CommandId;
+use Bauhaus\Cli\CommandId;
 use PHPUnit\Framework\TestCase;
 
 class CliInputTest extends TestCase

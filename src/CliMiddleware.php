@@ -2,7 +2,7 @@
 
 namespace Bauhaus;
 
-use Bauhaus\CliApplication\Processor;
+use Bauhaus\Cli\Processor;
 
 interface CliMiddleware
 {

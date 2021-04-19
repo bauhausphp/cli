@@ -1,6 +1,6 @@
 <?php
 
-namespace Bauhaus\CliApplication;
+namespace Bauhaus\Cli;
 
 use Bauhaus\CliEntrypoint;
 use Bauhaus\CliInput;

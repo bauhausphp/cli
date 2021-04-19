@@ -3,7 +3,7 @@
 namespace Bauhaus\Doubles\Entrypoints;
 
 use Bauhaus\CliEntrypoint;
-use Bauhaus\CliApplication\CommandId;
+use Bauhaus\Cli\CommandId;
 use Bauhaus\CliInput;
 use Bauhaus\CliOutput;
 

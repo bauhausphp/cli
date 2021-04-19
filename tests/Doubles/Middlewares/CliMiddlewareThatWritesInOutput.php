@@ -2,7 +2,7 @@
 
 namespace Bauhaus\Doubles\Middlewares;
 
-use Bauhaus\CliApplication\Processor;
+use Bauhaus\Cli\Processor;
 use Bauhaus\CliMiddleware;
 use Bauhaus\CliInput;
 use Bauhaus\CliOutput;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Bauhaus\CliApplication\Output;
+namespace Bauhaus\Cli\Output;
 
 use RuntimeException;
 

@@ -2,7 +2,7 @@
 
 namespace Bauhaus;
 
-use Bauhaus\CliApplication\Output\CannotWrite;
+use Bauhaus\Cli\Output\CannotWrite;
 
 final class CliOutput
 {

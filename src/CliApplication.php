@@ -2,8 +2,8 @@
 
 namespace Bauhaus;
 
-use Bauhaus\CliApplication\Processor;
-use Bauhaus\CliApplication\Processor\ActualProcessor;
+use Bauhaus\Cli\Processor;
+use Bauhaus\Cli\Processor\ActualProcessor;
 
 final class CliApplication
 {

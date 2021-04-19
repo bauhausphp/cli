@@ -1,9 +1,9 @@
 <?php
 
-namespace Bauhaus\CliApplication\Processor;
+namespace Bauhaus\Cli\Processor;
 
-use Bauhaus\CliApplication\CommandCollection;
-use Bauhaus\CliApplication\Processor;
+use Bauhaus\Cli\CommandCollection;
+use Bauhaus\Cli\Processor;
 use Bauhaus\CliEntrypoint;
 use Bauhaus\CliInput;
 use Bauhaus\CliOutput;
