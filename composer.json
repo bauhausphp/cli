@@ -1,0 +1,27 @@
+{
+    "name": "bauhaus/cli-kit",
+    "description": "Framework for creating cli application",
+
+    "type": "library",
+    "license": "MIT",
+
+    "autoload": {
+        "psr-4": {
+            "Bauhaus\\": "src/"
+        }
+    },
+
+    "autoload-dev": {
+        "psr-4": {
+            "Bauhaus\\": "tests/"
+        }
+    },
+
+    "require": {
+        "php": "^8.0"
+    },
+
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
