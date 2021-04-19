@@ -4,6 +4,8 @@ namespace Bauhaus;
 
 use Bauhaus\Cli\Output\CannotWrite;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use TypeError;
 
 class CliOutputTest extends TestCase
 {
@@ -40,5 +42,31 @@ class CliOutputTest extends TestCase
         $output->write('bar');
 
         $this->assertStringEqualsFile(self::OUTPUT, 'foobar');
+    }
+
+    /**
+     * @test
+     */
+    public function cannotWriteInOutputResourceAfterDestruct(): void
+    {
+        $output = CliOutput::to(self::OUTPUT);
+        $resource = $this->extractResource($output);
+        unset($output);
+
+        $this->expectException(TypeError::class);
+
+        fwrite($resource, 'foo');
+    }
+
+    /**
+     * @return resource
+     */
+    private function extractResource(CliOutput $output)
+    {
+        $r = new ReflectionClass($output);
+        $p = $r->getProperty('resource');
+        $p->setAccessible(true);
+
+        return $p->getValue($output);
     }
 }
