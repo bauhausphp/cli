@@ -3,6 +3,7 @@
 namespace Bauhaus;
 
 use Bauhaus\Cli\Output\CannotWrite;
+use Bauhaus\Cli\Output\Stream;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use TypeError;
@@ -47,24 +48,21 @@ class CliOutputTest extends TestCase
     /**
      * @test
      */
-    public function cannotWriteInOutputResourceAfterDestruct(): void
+    public function cannotWriteInStreamAfterOutputIsDestructed(): void
     {
         $output = CliOutput::to(self::OUTPUT);
-        $resource = $this->extractResource($output);
+        $stream = $this->extractStream($output);
         unset($output);
 
         $this->expectException(TypeError::class);
 
-        fwrite($resource, 'foo');
+        $stream->write('foo');
     }
 
-    /**
-     * @return resource
-     */
-    private function extractResource(CliOutput $output)
+    private function extractStream(CliOutput $output): Stream
     {
         $r = new ReflectionClass($output);
-        $p = $r->getProperty('resource');
+        $p = $r->getProperty('stream');
         $p->setAccessible(true);
 
         return $p->getValue($output);
