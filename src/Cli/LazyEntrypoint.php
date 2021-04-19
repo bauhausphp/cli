@@ -6,7 +6,6 @@ use Bauhaus\CliEntrypoint;
 use Bauhaus\CliInput;
 use Bauhaus\CliOutput;
 use Psr\Container\ContainerInterface as PsrContainer;
-use Psr\Container\NotFoundExceptionInterface as PsrNotFoundException;
 use Throwable;
 
 /**
@@ -20,6 +19,9 @@ final class LazyEntrypoint implements CliEntrypoint
     ) {
     }
 
+    /**
+     * @throws CouldNotLoadFromPsrContainer
+     */
     public function execute(CliInput $input, CliOutput $output): void
     {
         $this->load()->execute($input, $output);
@@ -29,10 +31,8 @@ final class LazyEntrypoint implements CliEntrypoint
     {
         try {
             return $this->container->get($this->entrypointClass);
-        } catch (PsrNotFoundException $ex) {
-            throw EntrypointCouldNotBeLoaded::notFound($this->entrypointClass, $ex);
         } catch (Throwable $ex) {
-            throw EntrypointCouldNotBeLoaded::error($this->entrypointClass, $ex);
+            throw new CouldNotLoadFromPsrContainer($this->entrypointClass, $ex);
         }
     }
 }
