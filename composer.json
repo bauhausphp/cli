@@ -1,5 +1,5 @@
 {
-    "name": "bauhaus/cli-kit",
+    "name": "bauhaus/cli",
     "description": "Framework for creating cli application",
 
     "type": "library",
