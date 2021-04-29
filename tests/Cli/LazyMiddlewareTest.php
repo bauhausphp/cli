@@ -2,7 +2,7 @@
 
 namespace Bauhaus\Cli;
 
-use Bauhaus\Doubles\Middlewares\CliMiddlewareThatDoesNothing;
+use Bauhaus\Doubles\Middlewares\MiddlewareThatDoesNothing;
 use Bauhaus\DoublesTrait;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -29,7 +29,7 @@ class LazyMiddlewareTest extends TestCase
             ->expects($this->never())
             ->method('get');
 
-        new LazyMiddleware($this->container, CliMiddlewareThatDoesNothing::class);
+        new LazyMiddleware($this->container, MiddlewareThatDoesNothing::class);
     }
 
     /**
@@ -40,10 +40,10 @@ class LazyMiddlewareTest extends TestCase
         $this->container
             ->expects($this->once())
             ->method('get')
-            ->with(CliMiddlewareThatDoesNothing::class)
-            ->willReturn(new CliMiddlewareThatDoesNothing());
+            ->with(MiddlewareThatDoesNothing::class)
+            ->willReturn(new MiddlewareThatDoesNothing());
 
-        $middleware = new LazyMiddleware($this->container, CliMiddlewareThatDoesNothing::class);
+        $middleware = new LazyMiddleware($this->container, MiddlewareThatDoesNothing::class);
         $middleware->execute($this->dummyInput(), $this->dummyOutput(), $this->dummyHandler());
     }
 
@@ -55,7 +55,7 @@ class LazyMiddlewareTest extends TestCase
         $this->container
             ->method('get')
             ->willThrowException(new Exception('error msg'));
-        $class = CliMiddlewareThatDoesNothing::class;
+        $class = MiddlewareThatDoesNothing::class;
 
         $this->expectException(CouldNotLoadFromPsrContainer::class);
         $this->expectExceptionMessage(<<<MSG

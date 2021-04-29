@@ -7,10 +7,16 @@ use Bauhaus\CliMiddleware;
 use Bauhaus\CliInput;
 use Bauhaus\CliOutput;
 
-class CliMiddlewareThatDoesNothing implements CliMiddleware
+class MiddlewareThatWritesInOutput implements CliMiddleware
 {
+    public function __construct(
+        private string $toWrite,
+    ) {
+    }
+
     public function execute(CliInput $input, CliOutput $output, Handler $next): void
     {
+        $output->write($this->toWrite);
         $next->execute($input, $output);
     }
 }

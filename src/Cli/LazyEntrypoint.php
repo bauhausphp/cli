@@ -17,6 +17,12 @@ final class LazyEntrypoint implements CliEntrypoint
         private PsrContainer $container,
         private string $entrypointClass,
     ) {
+        // TODO check if $entrypointClass is CliEntrypoint
+    }
+
+    public function className(): string
+    {
+        return $this->entrypointClass;
     }
 
     /**
