@@ -2,10 +2,15 @@
 
 namespace Bauhaus;
 
+use Bauhaus\Cli\LazyEntrypoint;
+use Bauhaus\Cli\LazyMiddleware;
+use Psr\Container\ContainerInterface as PsrContainer;
+
 final class CliApplicationSettings
 {
     private const DEFAULT_OUTPUT = 'php://stdout';
 
+    private ?PsrContainer $container = null;
     private array $entrypoints = [];
     private array $middlewares = [];
 
@@ -50,16 +55,34 @@ final class CliApplicationSettings
         return $new;
     }
 
-    public function withEntrypoints(CliEntrypoint ...$entrypoints): self
+    public function withPsrContainer(PsrContainer $container): self
     {
+        $new = $this->clone();
+        $new->container = $container;
+
+        return $new;
+    }
+
+    public function withEntrypoints(CliEntrypoint|string ...$entrypoints): self
+    {
+        $entrypoints = array_map(
+            fn ($e): CliEntrypoint => is_string($e) ? new LazyEntrypoint($this->container, $e) : $e,
+            $entrypoints
+        );
+
         $new = $this->clone();
         $new->entrypoints = $entrypoints;
 
         return $new;
     }
 
-    public function withMiddlewares(CliMiddleware ...$middlewares): self
+    public function withMiddlewares(CliMiddleware|string ...$middlewares): self
     {
+        $middlewares = array_map(
+            fn ($m): CliMiddleware => is_string($m) ? new LazyMiddleware($this->container, $m) : $m,
+            $middlewares
+        );
+
         $new = $this->clone();
         $new->middlewares = $middlewares;
 

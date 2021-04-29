@@ -14,6 +14,10 @@ final class CommandAttributeExtractor
 
     public function __construct(CliEntrypoint $entrypoint)
     {
+        if ($entrypoint instanceof LazyEntrypoint) {
+            $entrypoint = $entrypoint->className();
+        }
+
         $this->reflection = new ReflectionClass($entrypoint);
     }
 

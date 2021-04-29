@@ -7,20 +7,33 @@ use Bauhaus\CliInput;
 use Bauhaus\Doubles\Entrypoints\AnotherSampleCliEntrypoint;
 use Bauhaus\Doubles\Entrypoints\SampleCliEntrypoint;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface as PsrContainer;
 
 class CommandTest extends TestCase
 {
-    public function entrypointWithExpectedCommandId(): array
+    public function entrypointsWithExpectedCommandIds(): array
     {
+        $container = $this->createMock(PsrContainer::class);
+
         return [
-            [new SampleCliEntrypoint(), new CommandId('sample-id')],
-            [new AnotherSampleCliEntrypoint(), new CommandId('another-sample-id')],
+            [
+                new SampleCliEntrypoint(),
+                new CommandId('sample-id'),
+            ],
+            [
+                new AnotherSampleCliEntrypoint(),
+                new CommandId('another-sample-id'),
+            ],
+            [
+                new LazyEntrypoint($container, AnotherSampleCliEntrypoint::class),
+                new CommandId('another-sample-id'),
+            ],
         ];
     }
 
     /**
      * @test
-     * @dataProvider entrypointWithExpectedCommandId
+     * @dataProvider entrypointsWithExpectedCommandIds
      */
     public function extractIdFromEntrypoint(CliEntrypoint $entrypoint, CommandId $expected): void
     {

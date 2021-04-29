@@ -1,7 +1,8 @@
 <?php
 
-namespace Bauhaus\Cli\Processor;
+namespace Bauhaus\Cli\Processor\Handlers;
 
+use Bauhaus\Cli\Processor\Handler;
 use Bauhaus\CliInput;
 use Bauhaus\CliMiddleware;
 use Bauhaus\CliOutput;
@@ -9,7 +10,7 @@ use Bauhaus\CliOutput;
 /**
  * @internal
  */
-class MiddlewareDelegator implements Handler
+class MiddlewareChainDelegator implements Handler
 {
     public function __construct(
         private CliMiddleware $middleware,

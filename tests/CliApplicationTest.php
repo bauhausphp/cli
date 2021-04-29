@@ -4,7 +4,8 @@ namespace Bauhaus;
 
 use Bauhaus\Doubles\Entrypoints\AnotherSampleCliEntrypoint;
 use Bauhaus\Doubles\Entrypoints\SampleCliEntrypoint;
-use Bauhaus\Doubles\Middlewares\CliMiddlewareThatWritesInOutput;
+use Bauhaus\Doubles\Middlewares\MiddlewareThatWritesInOutput;
+use Bauhaus\Doubles\SimpleContainer;
 use PHPUnit\Framework\TestCase;
 
 class CliApplicationTest extends TestCase
@@ -15,15 +16,21 @@ class CliApplicationTest extends TestCase
 
     protected function setUp(): void
     {
+        $container = new SimpleContainer([
+            AnotherSampleCliEntrypoint::class => new AnotherSampleCliEntrypoint(),
+            MiddlewareThatWritesInOutput::class => new MiddlewareThatWritesInOutput('# '),
+        ]);
+
         $settings = CliApplicationSettings::default()
             ->withOutput(self::OUTPUT)
+            ->withPsrContainer($container)
             ->withEntrypoints(
                 new SampleCliEntrypoint(),
-                new AnotherSampleCliEntrypoint(),
+                AnotherSampleCliEntrypoint::class,
             )
             ->withMiddlewares(
-                new CliMiddlewareThatWritesInOutput('! '),
-                new CliMiddlewareThatWritesInOutput('# '),
+                new MiddlewareThatWritesInOutput('! '),
+                MiddlewareThatWritesInOutput::class,
             );
 
         $this->cliApplication = CliApplication::bootstrap($settings);

@@ -1,9 +1,9 @@
 <?php
 
-namespace Bauhaus\Cli\Processor;
+namespace Bauhaus\Cli\Processor\Handlers;
 
 use Bauhaus\Cli\CommandCollection;
-use Bauhaus\CliEntrypoint;
+use Bauhaus\Cli\Processor\Handler;
 use Bauhaus\CliInput;
 use Bauhaus\CliOutput;
 
@@ -12,11 +12,9 @@ use Bauhaus\CliOutput;
  */
 class EntrypointExecutor implements Handler
 {
-    private CommandCollection $commands;
-
-    public function __construct(CliEntrypoint ...$entrypoints)
-    {
-        $this->commands = CommandCollection::fromEntrypoints(...$entrypoints);
+    public function __construct(
+        private CommandCollection $commands,
+    ) {
     }
 
     public function execute(CliInput $input, CliOutput $output): void

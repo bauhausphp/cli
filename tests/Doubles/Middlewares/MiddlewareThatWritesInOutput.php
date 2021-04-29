@@ -7,7 +7,7 @@ use Bauhaus\CliMiddleware;
 use Bauhaus\CliInput;
 use Bauhaus\CliOutput;
 
-class CliMiddlewareThatWritesInOutput implements CliMiddleware
+class MiddlewareThatWritesInOutput implements CliMiddleware
 {
     public function __construct(
         private string $toWrite,

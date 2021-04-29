@@ -2,12 +2,21 @@
 
 namespace Bauhaus;
 
+use Bauhaus\Cli\LazyEntrypoint;
 use Bauhaus\Doubles\Entrypoints\SampleCliEntrypoint;
-use Bauhaus\Doubles\Middlewares\CliMiddlewareThatWritesInOutput;
+use Bauhaus\Doubles\Middlewares\MiddlewareThatWritesInOutput;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface as PsrContainer;
 
 class CliApplicationSettingsTest extends TestCase
 {
+    private PsrContainer $container;
+
+    protected function setUp(): void
+    {
+        $this->container = $this->createMock(PsrContainer::class);
+    }
+
     /**
      * @test
      */
@@ -51,14 +60,32 @@ class CliApplicationSettingsTest extends TestCase
     /**
      * @test
      */
+    public function createLazyEntrypointInCaseClassNameIsProvided(): void
+    {
+        $originalSettings = CliApplicationSettings::default()
+            ->withPsrContainer($this->container);
+
+        $newSettings = $originalSettings->withEntrypoints(SampleCliEntrypoint::class);
+
+        $this->assertNotSame($originalSettings, $newSettings);
+        $this->assertEquals([], $originalSettings->entrypoints());
+        $this->assertEquals(
+            [new LazyEntrypoint($this->container, SampleCliEntrypoint::class)],
+            $newSettings->entrypoints(),
+        );
+    }
+
+    /**
+     * @test
+     */
     public function setMiddlewaresByNewInstance(): void
     {
         $originalSettings = CliApplicationSettings::default();
 
-        $newSettings = $originalSettings->withMiddlewares(new CliMiddlewareThatWritesInOutput('#'));
+        $newSettings = $originalSettings->withMiddlewares(new MiddlewareThatWritesInOutput('#'));
 
         $this->assertNotSame($originalSettings, $newSettings);
         $this->assertEquals([], $originalSettings->entrypoints());
-        $this->assertEquals([new CliMiddlewareThatWritesInOutput('#')], $newSettings->middlewares());
+        $this->assertEquals([new MiddlewareThatWritesInOutput('#')], $newSettings->middlewares());
     }
 }
