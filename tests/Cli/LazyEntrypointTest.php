@@ -59,7 +59,7 @@ class LazyEntrypointTest extends TestCase
 
         $this->expectException(CouldNotLoadFromPsrContainer::class);
         $this->expectExceptionMessage(<<<MSG
-            Could not load from PSR container
+            Could not load service from PSR container
                 id: $class
                 reason: error msg
             MSG);
