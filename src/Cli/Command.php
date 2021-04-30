@@ -2,46 +2,45 @@
 
 namespace Bauhaus\Cli;
 
-use Bauhaus\CliEntrypoint;
-use Bauhaus\CliInput;
-use Bauhaus\CliOutput;
+use Bauhaus\Cli\Attribute\Extractor;
+use Bauhaus\Cli\Attribute\Name;
 
 /**
  * @internal
  */
 final class Command
 {
-    private CommandId $id;
+    private Name $id;
 
     private function __construct(
-        private CliEntrypoint $entrypoint,
+        private Entrypoint $entrypoint,
     ) {
         $this->extractEntrypointAttributes();
     }
 
-    public static function fromEntrypoint(CliEntrypoint $entrypoint): self
+    public static function fromEntrypoint(Entrypoint $entrypoint): self
     {
         return new self($entrypoint);
     }
 
-    public function id(): CommandId
+    public function id(): Name
     {
         return $this->id;
     }
 
-    public function execute(CliInput $input, CliOutput $output): void
+    public function execute(Input $input, Output $output): void
     {
         $this->entrypoint->execute($input, $output);
     }
 
-    public function match(CliInput $input): bool
+    public function match(Input $input): bool
     {
         return $this->id->equalTo($input->commandId());
     }
 
     private function extractEntrypointAttributes(): void
     {
-        $attributeExtractor = new CommandAttributeExtractor($this->entrypoint);
+        $attributeExtractor = new Extractor($this->entrypoint);
 
         $this->id = $attributeExtractor->id();
     }

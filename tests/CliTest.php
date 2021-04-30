@@ -2,38 +2,38 @@
 
 namespace Bauhaus;
 
-use Bauhaus\Doubles\Entrypoints\AnotherSampleCliEntrypoint;
-use Bauhaus\Doubles\Entrypoints\SampleCliEntrypoint;
+use Bauhaus\Doubles\Entrypoints\AnotherSampleEntrypoint;
+use Bauhaus\Doubles\Entrypoints\SampleEntrypoint;
 use Bauhaus\Doubles\Middlewares\MiddlewareThatWritesInOutput;
 use Bauhaus\Doubles\SimpleContainer;
 use PHPUnit\Framework\TestCase;
 
-class CliApplicationTest extends TestCase
+class CliTest extends TestCase
 {
     private const OUTPUT = '/var/tmp/cli_application_test.txt';
 
-    private CliApplication $cliApplication;
+    private Cli $cliApplication;
 
     protected function setUp(): void
     {
         $container = new SimpleContainer([
-            AnotherSampleCliEntrypoint::class => new AnotherSampleCliEntrypoint(),
+            AnotherSampleEntrypoint::class => new AnotherSampleEntrypoint(),
             MiddlewareThatWritesInOutput::class => new MiddlewareThatWritesInOutput('# '),
         ]);
 
-        $settings = CliApplicationSettings::default()
+        $settings = CliSettings::default()
             ->withOutput(self::OUTPUT)
             ->withPsrContainer($container)
             ->withEntrypoints(
-                new SampleCliEntrypoint(),
-                AnotherSampleCliEntrypoint::class,
+                new SampleEntrypoint(),
+                AnotherSampleEntrypoint::class,
             )
             ->withMiddlewares(
                 new MiddlewareThatWritesInOutput('! '),
                 MiddlewareThatWritesInOutput::class,
             );
 
-        $this->cliApplication = CliApplication::bootstrap($settings);
+        $this->cliApplication = Cli::bootstrap($settings);
     }
 
     protected function tearDown(): void

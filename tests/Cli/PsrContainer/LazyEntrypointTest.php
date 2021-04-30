@@ -1,15 +1,15 @@
 <?php
 
-namespace Bauhaus\Cli;
+namespace Bauhaus\Cli\PsrContainer;
 
-use Bauhaus\Doubles\Middlewares\MiddlewareThatDoesNothing;
+use Bauhaus\Doubles\Entrypoints\SampleEntrypoint;
 use Bauhaus\DoublesTrait;
 use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface as PsrContainer;
 
-class LazyMiddlewareTest extends TestCase
+class LazyEntrypointTest extends TestCase
 {
     use DoublesTrait;
 
@@ -29,7 +29,7 @@ class LazyMiddlewareTest extends TestCase
             ->expects($this->never())
             ->method('get');
 
-        new LazyMiddleware($this->container, MiddlewareThatDoesNothing::class);
+        new LazyEntrypoint($this->container, SampleEntrypoint::class);
     }
 
     /**
@@ -40,22 +40,22 @@ class LazyMiddlewareTest extends TestCase
         $this->container
             ->expects($this->once())
             ->method('get')
-            ->with(MiddlewareThatDoesNothing::class)
-            ->willReturn(new MiddlewareThatDoesNothing());
+            ->with(SampleEntrypoint::class)
+            ->willReturn(new SampleEntrypoint());
 
-        $middleware = new LazyMiddleware($this->container, MiddlewareThatDoesNothing::class);
-        $middleware->execute($this->dummyInput(), $this->dummyOutput(), $this->dummyHandler());
+        $entrypoint = new LazyEntrypoint($this->container, SampleEntrypoint::class);
+        $entrypoint->execute($this->dummyInput(), $this->dummyOutput());
     }
 
     /**
      * @test
      */
-    public function throwExceptionIfEntrypointIsNotFound(): void
+    public function throwExceptionIfEntrypointCanNotBeLoadedFromContainer(): void
     {
         $this->container
             ->method('get')
             ->willThrowException(new Exception('error msg'));
-        $class = MiddlewareThatDoesNothing::class;
+        $class = SampleEntrypoint::class;
 
         $this->expectException(CouldNotLoadFromPsrContainer::class);
         $this->expectExceptionMessage(<<<MSG
@@ -64,7 +64,7 @@ class LazyMiddlewareTest extends TestCase
                 reason: error msg
             MSG);
 
-        $middleware = new LazyMiddleware($this->container, $class);
-        $middleware->execute($this->dummyInput(), $this->dummyOutput(), $this->dummyHandler());
+        $entrypoint = new LazyEntrypoint($this->container, $class);
+        $entrypoint->execute($this->dummyInput(), $this->dummyOutput());
     }
 }

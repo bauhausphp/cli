@@ -1,6 +1,6 @@
 <?php
 
-namespace Bauhaus;
+namespace Bauhaus\Cli;
 
 use Bauhaus\Cli\Output\CannotWrite;
 use Bauhaus\Cli\Output\Stream;
@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use TypeError;
 
-class CliOutputTest extends TestCase
+class OutputTest extends TestCase
 {
     private const OUTPUT = '/var/tmp/output_test.txt';
 
@@ -29,7 +29,7 @@ class CliOutputTest extends TestCase
         $this->expectException(CannotWrite::class);
         $this->expectExceptionMessage("Provided output is a directory: $dir");
 
-        CliOutput::to($dir);
+        Output::to($dir);
     }
 
     /**
@@ -37,7 +37,7 @@ class CliOutputTest extends TestCase
      */
     public function writeByAppendingStringToOutput(): void
     {
-        $output = CliOutput::to(self::OUTPUT);
+        $output = Output::to(self::OUTPUT);
 
         $output->write('foo');
         $output->write('bar');
@@ -50,7 +50,7 @@ class CliOutputTest extends TestCase
      */
     public function cannotWriteInStreamAfterOutputIsDestructed(): void
     {
-        $output = CliOutput::to(self::OUTPUT);
+        $output = Output::to(self::OUTPUT);
         $stream = $this->extractStream($output);
         unset($output);
 
@@ -59,7 +59,7 @@ class CliOutputTest extends TestCase
         $stream->write('foo');
     }
 
-    private function extractStream(CliOutput $output): Stream
+    private function extractStream(Output $output): Stream
     {
         $r = new ReflectionClass($output);
         $p = $r->getProperty('stream');

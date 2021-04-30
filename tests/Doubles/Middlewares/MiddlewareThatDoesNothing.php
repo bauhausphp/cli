@@ -3,13 +3,13 @@
 namespace Bauhaus\Doubles\Middlewares;
 
 use Bauhaus\Cli\Processor\Handler;
-use Bauhaus\CliMiddleware;
-use Bauhaus\CliInput;
-use Bauhaus\CliOutput;
+use Bauhaus\Cli\Processor\Middleware;
+use Bauhaus\Cli\Input;
+use Bauhaus\Cli\Output;
 
-class MiddlewareThatDoesNothing implements CliMiddleware
+class MiddlewareThatDoesNothing implements Middleware
 {
-    public function execute(CliInput $input, CliOutput $output, Handler $next): void
+    public function execute(Input $input, Output $output, Handler $next): void
     {
         $next->execute($input, $output);
     }

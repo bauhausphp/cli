@@ -2,11 +2,13 @@
 
 namespace Bauhaus;
 
-use Bauhaus\Cli\LazyEntrypoint;
-use Bauhaus\Cli\LazyMiddleware;
+use Bauhaus\Cli\Entrypoint;
+use Bauhaus\Cli\PsrContainer\LazyEntrypoint;
+use Bauhaus\Cli\PsrContainer\LazyMiddleware;
+use Bauhaus\Cli\Processor\Middleware;
 use Psr\Container\ContainerInterface as PsrContainer;
 
-final class CliApplicationSettings
+final class CliSettings
 {
     private const DEFAULT_OUTPUT = 'php://stdout';
 
@@ -32,7 +34,7 @@ final class CliApplicationSettings
     }
 
     /**
-     * @return CliEntrypoint[]
+     * @return Entrypoint[]
      */
     public function entrypoints(): array
     {
@@ -40,7 +42,7 @@ final class CliApplicationSettings
     }
 
     /**
-     * @return CliMiddleware[]
+     * @return Middleware[]
      */
     public function middlewares(): array
     {
@@ -63,10 +65,10 @@ final class CliApplicationSettings
         return $new;
     }
 
-    public function withEntrypoints(CliEntrypoint|string ...$entrypoints): self
+    public function withEntrypoints(Entrypoint|string ...$entrypoints): self
     {
         $entrypoints = array_map(
-            fn ($e): CliEntrypoint => is_string($e) ? new LazyEntrypoint($this->container, $e) : $e,
+            fn ($e): Entrypoint => is_string($e) ? new LazyEntrypoint($this->container, $e) : $e,
             $entrypoints
         );
 
@@ -76,10 +78,10 @@ final class CliApplicationSettings
         return $new;
     }
 
-    public function withMiddlewares(CliMiddleware|string ...$middlewares): self
+    public function withMiddlewares(Middleware|string ...$middlewares): self
     {
         $middlewares = array_map(
-            fn ($m): CliMiddleware => is_string($m) ? new LazyMiddleware($this->container, $m) : $m,
+            fn ($m): Middleware => is_string($m) ? new LazyMiddleware($this->container, $m) : $m,
             $middlewares
         );
 

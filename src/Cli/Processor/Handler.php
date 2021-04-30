@@ -2,13 +2,10 @@
 
 namespace Bauhaus\Cli\Processor;
 
-use Bauhaus\CliInput;
-use Bauhaus\CliOutput;
+use Bauhaus\Cli\Input;
+use Bauhaus\Cli\Output;
 
-/**
- * @internal
- */
 interface Handler
 {
-    public function execute(CliInput $input, CliOutput $output): void;
+    public function execute(Input $input, Output $output): void;
 }

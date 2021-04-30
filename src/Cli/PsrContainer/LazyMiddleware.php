@@ -1,18 +1,18 @@
 <?php
 
-namespace Bauhaus\Cli;
+namespace Bauhaus\Cli\PsrContainer;
 
 use Bauhaus\Cli\Processor\Handler;
-use Bauhaus\CliInput;
-use Bauhaus\CliMiddleware;
-use Bauhaus\CliOutput;
+use Bauhaus\Cli\Input;
+use Bauhaus\Cli\Processor\Middleware;
+use Bauhaus\Cli\Output;
 use Psr\Container\ContainerInterface as PsrContainer;
 use Throwable;
 
 /**
  * @internal
  */
-final class LazyMiddleware implements CliMiddleware
+final class LazyMiddleware implements Middleware
 {
     public function __construct(
         private PsrContainer $container,
@@ -23,12 +23,12 @@ final class LazyMiddleware implements CliMiddleware
     /**
      * @throws CouldNotLoadFromPsrContainer
      */
-    public function execute(CliInput $input, CliOutput $output, Handler $next): void
+    public function execute(Input $input, Output $output, Handler $next): void
     {
         $this->load()->execute($input, $output, $next);
     }
 
-    private function load(): CliMiddleware
+    private function load(): Middleware
     {
         try {
             return $this->container->get($this->middlewareClass);

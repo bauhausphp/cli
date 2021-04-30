@@ -1,18 +1,19 @@
 <?php
 
-namespace Bauhaus\Cli;
+namespace Bauhaus\Cli\Attribute;
 
-use Bauhaus\CliEntrypoint;
+use Bauhaus\Cli\PsrContainer\LazyEntrypoint;
+use Bauhaus\Cli\Entrypoint;
 use ReflectionClass;
 
 /**
  * @internal
  */
-final class CommandAttributeExtractor
+final class Extractor
 {
     private ReflectionClass $reflection;
 
-    public function __construct(CliEntrypoint $entrypoint)
+    public function __construct(Entrypoint $entrypoint)
     {
         if ($entrypoint instanceof LazyEntrypoint) {
             $entrypoint = $entrypoint->className();
@@ -21,9 +22,9 @@ final class CommandAttributeExtractor
         $this->reflection = new ReflectionClass($entrypoint);
     }
 
-    public function id(): CommandId
+    public function id(): Name
     {
-        return $this->attributeInstance(CommandId::class);
+        return $this->attributeInstance(Name::class);
     }
 
     /**

@@ -2,13 +2,13 @@
 
 namespace Bauhaus;
 
-use Bauhaus\Cli\LazyEntrypoint;
-use Bauhaus\Doubles\Entrypoints\SampleCliEntrypoint;
+use Bauhaus\Cli\PsrContainer\LazyEntrypoint;
+use Bauhaus\Doubles\Entrypoints\SampleEntrypoint;
 use Bauhaus\Doubles\Middlewares\MiddlewareThatWritesInOutput;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface as PsrContainer;
 
-class CliApplicationSettingsTest extends TestCase
+class CliSettingsTest extends TestCase
 {
     private PsrContainer $container;
 
@@ -22,7 +22,7 @@ class CliApplicationSettingsTest extends TestCase
      */
     public function defaultOutputIsPhpStdout(): void
     {
-        $settings = CliApplicationSettings::default();
+        $settings = CliSettings::default();
 
         $output = $settings->output();
 
@@ -34,7 +34,7 @@ class CliApplicationSettingsTest extends TestCase
      */
     public function allowOutputCustomizationByCreatingNewInstance(): void
     {
-        $originalSettings = CliApplicationSettings::default();
+        $originalSettings = CliSettings::default();
 
         $newSettings = $originalSettings->withOutput('/var/tmp/some_file.txt');
 
@@ -48,13 +48,13 @@ class CliApplicationSettingsTest extends TestCase
      */
     public function setEntrypointsByNewInstance(): void
     {
-        $originalSettings = CliApplicationSettings::default();
+        $originalSettings = CliSettings::default();
 
-        $newSettings = $originalSettings->withEntrypoints(new SampleCliEntrypoint());
+        $newSettings = $originalSettings->withEntrypoints(new SampleEntrypoint());
 
         $this->assertNotSame($originalSettings, $newSettings);
         $this->assertEquals([], $originalSettings->entrypoints());
-        $this->assertEquals([new SampleCliEntrypoint()], $newSettings->entrypoints());
+        $this->assertEquals([new SampleEntrypoint()], $newSettings->entrypoints());
     }
 
     /**
@@ -62,15 +62,15 @@ class CliApplicationSettingsTest extends TestCase
      */
     public function createLazyEntrypointInCaseClassNameIsProvided(): void
     {
-        $originalSettings = CliApplicationSettings::default()
+        $originalSettings = CliSettings::default()
             ->withPsrContainer($this->container);
 
-        $newSettings = $originalSettings->withEntrypoints(SampleCliEntrypoint::class);
+        $newSettings = $originalSettings->withEntrypoints(SampleEntrypoint::class);
 
         $this->assertNotSame($originalSettings, $newSettings);
         $this->assertEquals([], $originalSettings->entrypoints());
         $this->assertEquals(
-            [new LazyEntrypoint($this->container, SampleCliEntrypoint::class)],
+            [new LazyEntrypoint($this->container, SampleEntrypoint::class)],
             $newSettings->entrypoints(),
         );
     }
@@ -80,7 +80,7 @@ class CliApplicationSettingsTest extends TestCase
      */
     public function setMiddlewaresByNewInstance(): void
     {
-        $originalSettings = CliApplicationSettings::default();
+        $originalSettings = CliSettings::default();
 
         $newSettings = $originalSettings->withMiddlewares(new MiddlewareThatWritesInOutput('#'));
 

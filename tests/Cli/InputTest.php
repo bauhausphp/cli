@@ -1,20 +1,20 @@
 <?php
 
-namespace Bauhaus;
+namespace Bauhaus\Cli;
 
-use Bauhaus\Cli\CommandId;
+use Bauhaus\Cli\Attribute\Name;
 use PHPUnit\Framework\TestCase;
 
-class CliInputTest extends TestCase
+class InputTest extends TestCase
 {
     /**
      * @test
      */
     public function determineCommandIdFromArgv(): void
     {
-        $expected = new CommandId('command-id');
+        $expected = new Name('command-id');
 
-        $input = CliInput::fromArgv('./bin/console', 'command-id');
+        $input = Input::fromArgv('./bin/console', 'command-id');
         $commandId = $input->commandId();
 
         $this->assertEquals($expected, $commandId);

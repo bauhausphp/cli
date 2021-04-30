@@ -3,34 +3,34 @@
 ```php
 <?php
 
-use Bauhaus\CliApplication;
-use Bauhaus\CliApplicationSettings;
-use Bauhaus\CliEntrypoint;
-use Bauhaus\CliInput;
-use Bauhaus\CliOutput;
-use Bauhaus\CliMiddleware;
-use Bauhaus\Cli\CommandId;
+use Bauhaus\Cli;
+use Bauhaus\CliSettings;
+use Bauhaus\Cli\Entrypoint;
+use Bauhaus\Cli\Input;
+use Bauhaus\Cli\Output;
+use Bauhaus\Cli\Processor\Middleware;
+use Bauhaus\Cli\Attribute\Name;
 use Bauhaus\Cli\Processor\Handler;
 
-#[CommandId('command-id')]
-class MyCliEntrypoint implements CliEntrypoint
+#[Name('command-id')]
+class MyCliEntrypoint implements Entrypoint
 {
-    public function execute(CliInput $input, CliOutput $output): void
+    public function execute(Input $input, Output $output): void
     {
         $output->write("my entrypoing\n");
     }
 }
 
-class MyCliMiddleware implements CliMiddleware
+class MyCliMiddleware implements Middleware
 {
-    public function execute(CliInput $input,CliOutput $output, Handler $next): void
+    public function execute(Input $input,Output $output, Handler $next): void
     {
         $output->write("my middleware\n");
         $next->execute($input, $output);
     }
 }
 
-$settings = CliApplicationSettings::default()
+$settings = CliSettings::default()
     ->withOutput('/var/tmp/file') // default is php://stdout
     ->withEntrypoints(
         new MyCliEntrypoint(),
@@ -39,7 +39,7 @@ $settings = CliApplicationSettings::default()
         new MyCliMiddleware(),
     );
 
-$cliApplication = CliApplication::bootstrap($settings);
+$cliApplication = Cli::bootstrap($settings);
 
 $cliApplication->run('./bin', 'command-id'); // it could be $cliApplication->run($_SERVER['argv']);
 ```
