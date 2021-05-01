@@ -10,7 +10,7 @@ use Bauhaus\Cli\Output;
 /**
  * @internal
  */
-class CommandExecutor implements Handler
+final class CommandExecutor implements Handler
 {
     public function __construct(
         private CommandCollection $commands,

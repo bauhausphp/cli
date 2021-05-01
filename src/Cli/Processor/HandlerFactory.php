@@ -9,7 +9,7 @@ use Bauhaus\CliSettings;
 /**
  * @internal
  */
-class HandlerFactory
+final class HandlerFactory
 {
     private CommandCollection $commands;
 

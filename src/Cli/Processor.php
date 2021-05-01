@@ -9,7 +9,7 @@ use Bauhaus\CliSettings;
 /**
  * @internal
  */
-class Processor
+final class Processor
 {
     private function __construct(
         private Handler $handler,

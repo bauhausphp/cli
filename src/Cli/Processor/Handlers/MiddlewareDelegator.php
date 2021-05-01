@@ -10,7 +10,7 @@ use Bauhaus\Cli\Output;
 /**
  * @internal
  */
-class MiddlewareDelegator implements Handler
+final class MiddlewareDelegator implements Handler
 {
     public function __construct(
         private Middleware $middleware,
