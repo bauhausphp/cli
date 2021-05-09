@@ -2,25 +2,24 @@
 
 namespace Bauhaus\Cli\Processor;
 
-use Bauhaus\Cli\CommandCollection;
-use Bauhaus\Cli\Processor\Handlers\EntrypointExecutor;
-use Bauhaus\Cli\Processor\Handlers\MiddlewareChainDelegator;
-use Bauhaus\CliApplicationSettings;
+use Bauhaus\Cli\Processor\Handlers\CommandExecutor;
+use Bauhaus\Cli\Processor\Handlers\MiddlewareDelegator;
+use Bauhaus\CliSettings;
 
 /**
  * @internal
  */
-class HandlerFactory
+final class HandlerFactory
 {
     private CommandCollection $commands;
 
     private function __construct(
-        private CliApplicationSettings $settings,
+        private CliSettings $settings,
     ) {
         $this->commands = CommandCollection::fromEntrypoints(...$settings->entrypoints());
     }
 
-    public static function build(CliApplicationSettings $settings): Handler
+    public static function build(CliSettings $settings): Handler
     {
         $factory = new self($settings);
 
@@ -29,9 +28,9 @@ class HandlerFactory
         return $factory->buildMiddlewareChain($entrypointExecutor);
     }
 
-    private function buildEntrypointExecutor(): EntrypointExecutor
+    private function buildEntrypointExecutor(): CommandExecutor
     {
-        return new EntrypointExecutor($this->commands);
+        return new CommandExecutor($this->commands);
     }
 
     private function buildMiddlewareChain(Handler $next): Handler
@@ -39,7 +38,7 @@ class HandlerFactory
         $middlewares = array_reverse($this->settings->middlewares());
 
         foreach ($middlewares as $middleware) {
-            $next = new MiddlewareChainDelegator($middleware, $next);
+            $next = new MiddlewareDelegator($middleware, $next);
         }
 
         return $next;

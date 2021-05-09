@@ -1,10 +1,10 @@
 <?php
 
-namespace Bauhaus;
+namespace Bauhaus\Cli;
 
 use Bauhaus\Cli\Output\Stream;
 
-final class CliOutput
+final class Output
 {
     private Stream $stream;
 

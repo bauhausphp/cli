@@ -1,11 +1,11 @@
 <?php
 
-namespace Bauhaus\Cli;
+namespace Bauhaus\Cli\Attribute;
 
 use Attribute;
 
 #[Attribute]
-final class CommandId
+final class Name
 {
     public function __construct(
         private string $value,

@@ -3,22 +3,22 @@
 namespace Bauhaus\Cli\Processor\Handlers;
 
 use Bauhaus\Cli\Processor\Handler;
-use Bauhaus\CliInput;
-use Bauhaus\CliMiddleware;
-use Bauhaus\CliOutput;
+use Bauhaus\Cli\Input;
+use Bauhaus\Cli\Processor\Middleware;
+use Bauhaus\Cli\Output;
 
 /**
  * @internal
  */
-class MiddlewareChainDelegator implements Handler
+final class MiddlewareDelegator implements Handler
 {
     public function __construct(
-        private CliMiddleware $middleware,
+        private Middleware $middleware,
         private Handler $next,
     ) {
     }
 
-    public function execute(CliInput $input, CliOutput $output): void
+    public function execute(Input $input, Output $output): void
     {
         $this->middleware->execute($input, $output, $this->next);
     }

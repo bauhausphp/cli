@@ -2,27 +2,29 @@
 
 namespace Bauhaus;
 
+use Bauhaus\Cli\Input;
+use Bauhaus\Cli\Output;
 use Bauhaus\Cli\Processor;
 
-final class CliApplication
+final class Cli
 {
     private function __construct(
-        private CliOutput $output,
+        private Output $output,
         private Processor $processor,
     ) {
     }
 
-    public static function bootstrap(CliApplicationSettings $settings): self
+    public static function bootstrap(CliSettings $settings): self
     {
         return new self(
-            CliOutput::to($settings->output()),
+            Output::to($settings->output()),
             Processor::build($settings),
         );
     }
 
     public function run(string ...$argv): void
     {
-        $input = CliInput::fromArgv(...$argv);
+        $input = Input::fromArgv(...$argv);
 
         $this->processor->execute($input, $this->output);
     }

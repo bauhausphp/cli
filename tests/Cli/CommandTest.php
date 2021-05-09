@@ -2,10 +2,12 @@
 
 namespace Bauhaus\Cli;
 
-use Bauhaus\CliEntrypoint;
-use Bauhaus\CliInput;
-use Bauhaus\Doubles\Entrypoints\AnotherSampleCliEntrypoint;
-use Bauhaus\Doubles\Entrypoints\SampleCliEntrypoint;
+use Bauhaus\Cli\Attribute\Name;
+use Bauhaus\Cli\PsrContainer\LazyEntrypoint;
+use Bauhaus\Cli\Entrypoint;
+use Bauhaus\Cli\Input;
+use Bauhaus\Doubles\Entrypoints\AnotherSampleEntrypoint;
+use Bauhaus\Doubles\Entrypoints\SampleEntrypoint;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface as PsrContainer;
 
@@ -17,16 +19,16 @@ class CommandTest extends TestCase
 
         return [
             [
-                new SampleCliEntrypoint(),
-                new CommandId('sample-id'),
+                new SampleEntrypoint(),
+                new Name('sample-name'),
             ],
             [
-                new AnotherSampleCliEntrypoint(),
-                new CommandId('another-sample-id'),
+                new AnotherSampleEntrypoint(),
+                new Name('another-sample-name'),
             ],
             [
-                new LazyEntrypoint($container, AnotherSampleCliEntrypoint::class),
-                new CommandId('another-sample-id'),
+                new LazyEntrypoint($container, AnotherSampleEntrypoint::class),
+                new Name('another-sample-name'),
             ],
         ];
     }
@@ -35,7 +37,7 @@ class CommandTest extends TestCase
      * @test
      * @dataProvider entrypointsWithExpectedCommandIds
      */
-    public function extractIdFromEntrypoint(CliEntrypoint $entrypoint, CommandId $expected): void
+    public function extractIdFromEntrypoint(Entrypoint $entrypoint, Name $expected): void
     {
         $command = Command::fromEntrypoint($entrypoint);
 
@@ -49,8 +51,8 @@ class CommandTest extends TestCase
      */
     public function matchIfInputCommandIdIsEqual(): void
     {
-        $input = CliInput::fromString('./bin sample-id');
-        $command = Command::fromEntrypoint(new SampleCliEntrypoint());
+        $input = Input::fromString('./bin sample-name');
+        $command = Command::fromEntrypoint(new SampleEntrypoint());
 
         $result = $command->match($input);
 
@@ -62,8 +64,8 @@ class CommandTest extends TestCase
      */
     public function doNotMatchIfInputCommandIdIsNotEqual(): void
     {
-        $input = CliInput::fromString('./bin another-sample-id');
-        $command = Command::fromEntrypoint(new SampleCliEntrypoint());
+        $input = Input::fromString('./bin another-sample-name');
+        $command = Command::fromEntrypoint(new SampleEntrypoint());
 
         $result = $command->match($input);
 

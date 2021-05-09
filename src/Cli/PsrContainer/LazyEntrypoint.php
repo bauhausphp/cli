@@ -1,17 +1,17 @@
 <?php
 
-namespace Bauhaus\Cli;
+namespace Bauhaus\Cli\PsrContainer;
 
-use Bauhaus\CliEntrypoint;
-use Bauhaus\CliInput;
-use Bauhaus\CliOutput;
+use Bauhaus\Cli\Entrypoint;
+use Bauhaus\Cli\Input;
+use Bauhaus\Cli\Output;
 use Psr\Container\ContainerInterface as PsrContainer;
 use Throwable;
 
 /**
  * @internal
  */
-final class LazyEntrypoint implements CliEntrypoint
+final class LazyEntrypoint implements Entrypoint
 {
     public function __construct(
         private PsrContainer $container,
@@ -28,12 +28,12 @@ final class LazyEntrypoint implements CliEntrypoint
     /**
      * @throws CouldNotLoadFromPsrContainer
      */
-    public function execute(CliInput $input, CliOutput $output): void
+    public function execute(Input $input, Output $output): void
     {
         $this->load()->execute($input, $output);
     }
 
-    private function load(): CliEntrypoint
+    private function load(): Entrypoint
     {
         try {
             return $this->container->get($this->entrypointClass);

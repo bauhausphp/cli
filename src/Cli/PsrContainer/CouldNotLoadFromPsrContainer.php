@@ -1,6 +1,6 @@
 <?php
 
-namespace Bauhaus\Cli;
+namespace Bauhaus\Cli\PsrContainer;
 
 use RuntimeException;
 use Throwable;

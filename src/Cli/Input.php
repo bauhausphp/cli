@@ -1,13 +1,13 @@
 <?php
 
-namespace Bauhaus;
+namespace Bauhaus\Cli;
 
-use Bauhaus\Cli\CommandId;
+use Bauhaus\Cli\Attribute\Name;
 
-final class CliInput
+final class Input
 {
     private array $argv;
-    private CommandId $commandId;
+    private Name $commandId;
 
     private function __construct(string ...$rawInput)
     {
@@ -25,13 +25,13 @@ final class CliInput
         return new self(...explode(' ', $string));
     }
 
-    public function commandId(): CommandId
+    public function commandId(): Name
     {
         return $this->commandId;
     }
 
     private function parseInput(): void
     {
-        $this->commandId = new CommandId($this->argv[1]);
+        $this->commandId = new Name($this->argv[1]);
     }
 }

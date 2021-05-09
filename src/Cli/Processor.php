@@ -4,26 +4,24 @@ namespace Bauhaus\Cli;
 
 use Bauhaus\Cli\Processor\HandlerFactory;
 use Bauhaus\Cli\Processor\Handler;
-use Bauhaus\CliApplicationSettings;
-use Bauhaus\CliInput;
-use Bauhaus\CliOutput;
+use Bauhaus\CliSettings;
 
 /**
  * @internal
  */
-class Processor
+final class Processor
 {
     private function __construct(
         private Handler $handler,
     ) {
     }
 
-    public static function build(CliApplicationSettings $settings): self
+    public static function build(CliSettings $settings): self
     {
         return new self(HandlerFactory::build($settings));
     }
 
-    public function execute(CliInput $input, CliOutput $output): void
+    public function execute(Input $input, Output $output): void
     {
         $this->handler->execute($input, $output);
     }

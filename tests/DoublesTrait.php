@@ -2,24 +2,26 @@
 
 namespace Bauhaus;
 
+use Bauhaus\Cli\Input;
+use Bauhaus\Cli\Output;
 use Bauhaus\Cli\Processor\Handler;
 
 trait DoublesTrait
 {
-    protected function dummyInput(): CliInput
+    protected function dummyInput(): Input
     {
-        return CliInput::fromString('does not matter');
+        return Input::fromString('does not matter');
     }
 
-    protected function dummyOutput(): CliOutput
+    protected function dummyOutput(): Output
     {
-        return CliOutput::to('php://memory');
+        return Output::to('php://memory');
     }
 
     protected function dummyHandler(): Handler
     {
         return new class implements Handler {
-            public function execute(CliInput $input, CliOutput $output): void
+            public function execute(Input $input, Output $output): void
             {
             }
         };
