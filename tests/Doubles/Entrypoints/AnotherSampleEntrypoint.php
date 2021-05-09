@@ -7,7 +7,7 @@ use Bauhaus\Cli\Attribute\Name;
 use Bauhaus\Cli\Input;
 use Bauhaus\Cli\Output;
 
-#[Name('another-sample-id')]
+#[Name('another-sample-name')]
 class AnotherSampleEntrypoint implements Entrypoint
 {
     public function execute(Input $input, Output $output): void

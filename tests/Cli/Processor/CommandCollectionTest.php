@@ -36,8 +36,8 @@ class CommandCollectionTest extends TestCase
     public function inputsWithExpectedMatchingCommand(): array
     {
         return [
-            ['./bin sample-id', Command::fromEntrypoint(new SampleEntrypoint())],
-            ['./bin another-sample-id', Command::fromEntrypoint(new AnotherSampleEntrypoint())],
+            ['./bin sample-name', Command::fromEntrypoint(new SampleEntrypoint())],
+            ['./bin another-sample-name', Command::fromEntrypoint(new AnotherSampleEntrypoint())],
         ];
     }
 

@@ -46,8 +46,8 @@ class CliTest extends TestCase
     public function commandIdWithExpectedOutput(): array
     {
         return [
-            ['sample-id', '! # sample entrypoint'],
-            ['another-sample-id', '! # another sample entrypoint'],
+            ['sample-name', '! # sample entrypoint'],
+            ['another-sample-name', '! # another sample entrypoint'],
         ];
     }
 

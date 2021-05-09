@@ -20,15 +20,15 @@ class CommandTest extends TestCase
         return [
             [
                 new SampleEntrypoint(),
-                new Name('sample-id'),
+                new Name('sample-name'),
             ],
             [
                 new AnotherSampleEntrypoint(),
-                new Name('another-sample-id'),
+                new Name('another-sample-name'),
             ],
             [
                 new LazyEntrypoint($container, AnotherSampleEntrypoint::class),
-                new Name('another-sample-id'),
+                new Name('another-sample-name'),
             ],
         ];
     }
@@ -51,7 +51,7 @@ class CommandTest extends TestCase
      */
     public function matchIfInputCommandIdIsEqual(): void
     {
-        $input = Input::fromString('./bin sample-id');
+        $input = Input::fromString('./bin sample-name');
         $command = Command::fromEntrypoint(new SampleEntrypoint());
 
         $result = $command->match($input);
@@ -64,7 +64,7 @@ class CommandTest extends TestCase
      */
     public function doNotMatchIfInputCommandIdIsNotEqual(): void
     {
-        $input = Input::fromString('./bin another-sample-id');
+        $input = Input::fromString('./bin another-sample-name');
         $command = Command::fromEntrypoint(new SampleEntrypoint());
 
         $result = $command->match($input);
