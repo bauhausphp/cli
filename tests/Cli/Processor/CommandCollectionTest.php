@@ -53,4 +53,19 @@ class CommandCollectionTest extends TestCase
 
         $this->assertEquals($expected, $command);
     }
+
+    /**
+     * @test
+     */
+    public function isIterableHavingCommandsOrderedByTheirId(): void
+    {
+        $expected = new ArrayIterator([
+            Command::fromEntrypoint(new AnotherSampleEntrypoint()),
+            Command::fromEntrypoint(new SampleEntrypoint()),
+        ]);
+
+        $iterator = $this->collection->getIterator();
+
+        $this->assertEquals($expected, $iterator);
+    }
 }

@@ -15,7 +15,7 @@ class InputTest extends TestCase
         $expected = new Name('command-id');
 
         $input = Input::fromArgv('./bin/console', 'command-id');
-        $commandId = $input->commandName();
+        $commandId = $input->commandId();
 
         $this->assertEquals($expected, $commandId);
     }
