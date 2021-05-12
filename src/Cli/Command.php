@@ -35,7 +35,7 @@ final class Command
 
     public function match(Input $input): bool
     {
-        return $this->id->equalTo($input->commandId());
+        return $this->id->equalTo($input->commandName());
     }
 
     private function extractEntrypointAttributes(): void
