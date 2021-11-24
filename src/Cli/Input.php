@@ -7,7 +7,7 @@ use Bauhaus\Cli\Attribute\Name;
 final class Input
 {
     private array $argv;
-    private Name $commandId;
+    private Name $commandName;
 
     private function __construct(string ...$rawInput)
     {
@@ -25,13 +25,13 @@ final class Input
         return new self(...explode(' ', $string));
     }
 
-    public function commandId(): Name
+    public function commandName(): Name
     {
-        return $this->commandId;
+        return $this->commandName;
     }
 
     private function parseInput(): void
     {
-        $this->commandId = new Name($this->argv[1]);
+        $this->commandName = new Name($this->argv[1]);
     }
 }
